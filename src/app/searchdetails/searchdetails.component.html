@@ -1,0 +1,78 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <h1>{{ "Entity Details" | localize }} <span class="badge badge-success">{{doccount}}</span></h1>
+            </div>
+            <!--<div class="col-6 text-right">
+                <a href="javascript:;" class="btn bg-blue" (click)="createUser()">
+                    <i class="fa fa-plus-square"></i>
+                    {{ "Details" | localize }}
+                </a>
+            </div>-->
+        </div>
+    </div>
+</section>
+
+<section class="content px-2">
+    <div class="container-fluid">
+        <div class="card" *ngIf="isloading">
+            <div class="card-body">
+                <div class="fa-2x" style="text-align-last: center;">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i> Loading....
+                </div>
+            </div>
+        </div>           
+
+        <div class="card" *ngFor="let doc of documnetList ; let i = index">
+                <div class="card-body">
+                    <div class="row about-list">
+                        <div class="col-md-4">
+                            <div class="media">
+                                <label>entity_key</label>
+                                <p>{{doc.entity_key}}</p>
+                            </div>
+                            <div class="media">
+                                <label>email</label>
+                                <p>{{doc.email_address}}</p>
+                            </div>
+                            <div class="media">
+                                <label>address_1</label>
+                                <p>{{doc.address_line_1}}</p>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="media">
+                                <label>name</label>
+                                <p>{{getFullname(doc)}}</p>
+                            </div>
+                            <div class="media">
+                                <label>city</label>
+                                <p>{{doc.city}}</p>
+                            </div>
+                            <div class="media">
+                                <label>address_2</label>
+                                <p>{{doc.address_line_2}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="media">
+                                <label>phone</label>
+                                <p>{{doc.phone_number}}</p>
+                            </div>
+                            <div class="media">
+                                <label>Status</label>
+                                <p>{{doc.status}}</p>
+                            </div>
+                            <div class="media">
+                                <label>Type</label>
+                                <p>{{doc.type}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     </div>
+
+</section>

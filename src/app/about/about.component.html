@@ -1,0 +1,309 @@
+<!--<div class="searchBoxForm" style="margin:15px">
+    <input class="searchBox" id="autocomplete" type="text" name="browser" id="browser" [(ngModel)]="searchfield"  (input)="searchdata()"/>
+    <input class="searchBoxSubmit" type="submit" value="">
+
+</div>-->
+<!--<div  class="searchBoxForm" style="margin:15px">
+    <input list="browsers" name="browser" id="browser" class="searchBox"  [(ngModel)]="searchfield"  (input)="searchdata()" >
+    <datalist id="browsers">
+        <option *ngFor="let item of searchresults" [value]="{{item.document.name}}">{{item.document.name}} - {{item.document.familyName}} - {{item.document.cityCountry}}</option>
+        <option value="Firefox">
+        <option value="Chrome">
+        <option value="Opera">
+        <option value="Safari">
+    </datalist>
+</div>-->
+<div class="card-body">
+
+    <!--<div class="card" *ngFor="let item of searchresults">
+        <h5 class="card-header">
+            <span>{{item.document.name}}</span>
+            <span>{{item.document.familyName}}</span>
+        </h5>
+        <div class="card-body">
+            {{item.text}}
+            <span [innerHtml]="testhtml">{{item.text}}</span>
+            <span> {{item.document.cityCountry}} </span>
+
+
+        </div>
+    </div>-->
+
+    <div class="home-page-background">
+        <div class="content">
+                     <div class="form-group" style="text-align-last: center;">
+                <div class="searchBoxForm">
+                    <input class="searchBox" id="autocomplete" type="text" name="browser"
+                           [(ngModel)]="searchfield" placeholder="What are you searching for today?" autocomplete="off" (keyup.enter)="onclick()"/>
+                    <!--<input class="searchBoxSubmit" type="submit" value="">-->
+                    <button type="submit" style="border-radius:0"
+                            class="btn bg-info mr-n2 text-black" (click)="onclick()">
+                        <i class="fas fa-search"></i>
+                    </button>
+
+                </div>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label for="exampleInputEmail1">Analyzers</label>
+                        <select class="form-control" aria-label="Default select example" [(ngModel)]="indexname">
+                            <option value="beidermorse-index">beidermorse</option>
+                            <option value="caverphone1-index">caverphone1</option>
+                            <option value="caverphone2-index">caverphone2</option>
+                            <option value="cologne-index">cologne</option>
+                            <option value="doublemetaphone-index">doublemetaphone</option>
+                            <option value="haasephonetik-index">haasephonetik</option>
+                            <option value="koelnerphonetik-index">koelnerphonetik</option>
+                            <option value="metaphone-index">metaphone</option>
+                            <option value="nysiis-index">nysiis</option>
+                            <option value="refinedsoundex-index">refinedsoundex</option>
+                            <option value="soundex-index">soundex</option>
+                        </select>
+                    </div>
+                    <div class="col-md-9 form-group">
+                        <ngx-slider [(value)]="value"
+                                    [(highValue)]="highValue"
+                                    [options]="options"
+                                    (userChange)="chnagetick($event)">
+                        </ngx-slider>
+                    </div>
+                </div>
+               
+            </div>
+           
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="card-body">
+    <div class="container">
+        <label>Total count : {{documnetList.length}} </label>
+
+        <div class="container mt-3">
+            <div class="fa-2x" *ngIf="isloading" style="text-align-last: center;">
+                <i class="fas fa-spinner fa-spin fa-2x"></i> Loading....           
+            </div>
+            <table class="table table-bordered"  *ngIf="isloading==false">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>score</th>
+                        <th>percent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let doc of documnetList; let i = index">
+                        <td>{{i+1}}</td>
+                        <td>{{doc.name}}</td>
+                        <td>{{doc.score}}</td>
+                        <td>{{doc.percent}}</td>
+
+                    </tr>
+                   
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row" *ngIf="false">
+            <!-- Side widgets-->
+            <div class="col-lg-4">
+                <!-- Search widget-->
+                <div class="card mb-4" *ngIf="false">
+                    <div class="card-header">Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search">
+                            <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Categories widget-->
+                <!-- Side widget-->
+                <div class="card mb-4" *ngFor="let fc of facets">
+                    <div class="card-header">{{fc.key}}</div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li (click)="facetclick(fc.key,fcv.value)" class="list-group-item" *ngFor="let fcv of fc.value" style="cursor:pointer">
+                                {{fcv.value}}
+                                <span class="badge badge-secondary ml-5">{{fcv.count}}</span>
+                            </li>
+                            <!--<li><a href="#!" *ngFor="let fcv of fc.value"></a></li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Blog entries-->
+            <div class="col-lg-8">
+                <!-- Featured blog post-->
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row">
+                    <div class="col-lg-4" *ngFor="let doc of docsearch">
+                        <!-- Blog post-->
+                        <div class="card mb-4">
+                            <a href="#!"><img class="card-img-top" src="{{doc.document.image_url}}" alt="..." height="200"></a>
+                            <div class="card-body">
+                                <div class="small text-muted">{{doc.document.original_publication_year}} {{doc.document.language_code}} ({{doc.document.average_rating}})</div>
+                                <h2 class="card-title h4">{{ doc.document.original_title}}</h2>
+
+                                <p class="card-text">Title : {{doc.document.title}}</p>
+                                <p class="card-text">Author : {{doc.document.authors}}</p>
+                                <p class="card-text">ISBN: {{doc.document.isbn}}</p>
+                            </div>
+                        </div>
+                        <!-- Blog post-->
+
+                    </div>
+
+                </div>
+                <!-- Pagination-->
+                <nav aria-label="Pagination" *ngIf="docsearch.length > 0">
+                    <hr class="my-0">
+                    <ul class="pagination justify-content-center my-4">
+                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+                        <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">15</a></li>
+                        <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<section class="content px-2" *ngIf="false">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-info alert-dismissible">
+                    <h6>
+                       
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>8.2k+</h3>
+                        <p>Stargazers</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>140+</h3>
+                        <p>Contributors</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                  
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>1.6k+</h3>
+                        <p>Used / Dependents</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>3.1k+</h3>
+                        <p>Forks</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-primary elevation-1">
+                        <i class="fas fa-plus-circle"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Commits</span>
+                        <span class="info-box-number">
+                            6,350+
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Issues</span>
+                        <span class="info-box-number">
+                            170+
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix hidden-md-up"></div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-info elevation-1">
+                        <i class="fas fa-tag"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Releases</span>
+                        <span class="info-box-number">
+                            200+
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-success elevation-1">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Watching by</span>
+                        <span class="info-box-number">
+                            810+
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</section>
+
+
+<style>
+    @media (min-width: 1200px) {
+        .container, .container-lg, .container-md, .container-sm, .container-xl {
+            max-width: 100% !important;
+        }
+    }
+</style>
