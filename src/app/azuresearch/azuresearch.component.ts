@@ -13,6 +13,7 @@ export class AzuresearchComponent extends AppComponentBase {
    
     entityFilter = true;
     caseFilter = false;
+    globalFilter = false;
     propertyFilter = false;
     mongoFilter = false;
     unstrucredFilter = false;
@@ -53,7 +54,7 @@ export class AzuresearchComponent extends AppComponentBase {
         this.documnetList = [];
         this.isloading = true;
         this._service
-            .searchEntity(this.searchfield, this.facetstring, 1,this.propertyFilter, this.mongoFilter)
+            .searchEntity(this.searchfield, this.facetstring, 1, this.propertyFilter, this.mongoFilter, this.globalFilter)
             .pipe(
                 finalize(() => { this.isloading = false; })
             )
@@ -102,6 +103,13 @@ export class AzuresearchComponent extends AppComponentBase {
         }
         
     }
+    eventCheckGlobal(event) {
+        if (event.checked) {
+            this.propertyFilter = false;
+            this.entityFilter = false;
+            this.mongoFilter = false;
+        }
+    }
     clicka() {
         alert('Hi')
     }
@@ -112,7 +120,7 @@ export class AzuresearchComponent extends AppComponentBase {
         this.facetstring = datakey + '_' + dataval;
         this.isloading = false;
         this._service
-            .searchEntity(this.searchfield, this.facetstring, 1, this.propertyFilter,this.mongoFilter)
+            .searchEntity(this.searchfield, this.facetstring, 1, this.propertyFilter, this.mongoFilter, this.globalFilter)
             .subscribe((result) => {
                 debugger;
                 this.searchresults = result;
@@ -164,4 +172,6 @@ export class AzuresearchComponent extends AppComponentBase {
         this.searchfield = event;
         this.onclick();
     }
+
+   
 }

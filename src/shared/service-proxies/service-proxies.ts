@@ -595,9 +595,10 @@ export class AzureSearchEntityServiceProxy {
      * @param page (optional) 
      * @param isProperty (optional) 
      * @param isMongoIndex (optional) 
+     * @param globalIndex (optional) 
      * @return Success
      */
-    searchEntity(q: string | undefined, facets: string | undefined, page: number | undefined, isProperty: boolean | undefined, isMongoIndex: boolean | undefined) : Observable<SearchResultViewModel> {
+    searchEntity(q: string | undefined, facets: string | undefined, page: number | undefined, isProperty: boolean | undefined, isMongoIndex: boolean | undefined, globalIndex: boolean | undefined) : Observable<SearchResultViewModel> {
         let url_ = this.baseUrl + "/api/services/app/AzureSearchEntity/SearchEntity?";
         if (q === null)
             throw new Error("The parameter 'q' cannot be null.");
@@ -619,6 +620,10 @@ export class AzureSearchEntityServiceProxy {
             throw new Error("The parameter 'isMongoIndex' cannot be null.");
         else if (isMongoIndex !== undefined)
             url_ += "isMongoIndex=" + encodeURIComponent("" + isMongoIndex) + "&";
+        if (globalIndex === null)
+            throw new Error("The parameter 'globalIndex' cannot be null.");
+        else if (globalIndex !== undefined)
+            url_ += "globalIndex=" + encodeURIComponent("" + globalIndex) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
